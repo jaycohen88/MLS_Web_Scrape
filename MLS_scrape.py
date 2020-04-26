@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 import csv
 
 # Open Chromdriver and go to first page to scrape
@@ -9,12 +10,41 @@ driver.get("https://www.fbref.com/en/comps/22/2798/2019-Major-League-Soccer-Stat
 csv_file = open('MLS_data.csv', 'w', encoding='utf-8', newline='')
 writer = csv.writer(csv_file)
 
+# Initialize empty dictionary
+final_data = {}
+
 # Click button to go to Squad Goalkeeping Table
 squad_goalkeeping_button = .driver.find_element_by_link_text('Squad Goalkeeping')
 squad_goalkeeping_button.click()
 
 # Scrape data from Squad Goalkeeping Table
-# Code here
+
+# Scrape team names
+
+# Find all elements containing team names
+team_elements = driver.find_elements_by_xpath('.//div[@id="div_stats_keeper_squads"]/table/tbody/tr/th/a')
+
+# Get list of team names
+teams = ''
+for team in team_elements:
+    teams = teams + team.text + ', '
+teams = (teams.rstrip(', ')).split(', ')
+
+# Scrape matches played
+
+
+
+# Scrape wins
+
+
+
+# Scrape draws
+
+
+
+# Scrape losses
+
+
 
 # Scroll back to top of page for easier in-page navigation
 driver.execute_script('window.scrollTo(0, 0)')
