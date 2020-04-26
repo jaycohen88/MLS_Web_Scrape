@@ -3,14 +3,12 @@ import csv
 
 # Open Chromdriver and go to first page to scrape
 driver = webdriver.Chrome()
+driver.implicitly_wait(10)
 driver.get("https://www.fbref.com/en/comps/22/2798/2019-Major-League-Soccer-Stats")
 
 # Start csv file
 csv_file = open('MLS_data.csv', 'w', encoding='utf-8', newline='')
 writer = csv.writer(csv_file)
-
-# Initialize empty dictionary
-final_data = {}
 
 # Click button to go to Squad Goalkeeping Table
 squad_goalkeeping_button = driver.find_element_by_link_text('Squad Goalkeeping')
@@ -121,7 +119,7 @@ num_high_press_2019 = (num_high_press_2019.rstrip(', ')).split(', ')
 driver.execute_script('window.scrollTo(0, 0)')
 
 # Click button to go to Squad Playing Time Table
-squad_playing_time_button = driver.find_element_by_link_text('Squad Playing Time Actions')
+squad_playing_time_button = driver.find_element_by_link_text('Squad Playing Time')
 squad_playing_time_button.click()
 
 # Scrape data from Squad Playing Time Table
@@ -243,7 +241,7 @@ num_high_press_2018 = (num_high_press_2018.rstrip(', ')).split(', ')
 
 driver.execute_script('window.scrollTo(0, 0)')
 
-squad_playing_time_button = driver.find_element_by_link_text('Squad Playing Time Actions')
+squad_playing_time_button = driver.find_element_by_link_text('Squad Playing Time')
 squad_playing_time_button.click()
 
 goals_scored_2018_elements = driver.find_elements_by_xpath('.//div[@id="div_stats_playing_time_squads"]/table/tbody/tr/td[12]')
@@ -270,8 +268,14 @@ for xgd18 in expected_goal_difference_2018_elements:
     expected_goal_difference_2018 = expected_goal_difference_2018 + xgd18.text + ', '
 expected_goal_difference_2018 = (expected_goal_difference_2018.rstrip(', ')).split(', ')
 
+#Write to csv file
+rows = [teams_2019, matches_played_2019, wins_2019, draws_2019, losses_2019, goals_scored_2019, goal_difference_2019, \
+expected_goals_scored_2019, expected_goal_difference_2019, crosses_2019, completed_crosses_into_box_2019, pressures_2019, \
+successful_pressures_2019, num_high_press_2019, teams_2018, matches_played_2018, wins_2018, draws_2018, losses_2018, goals_scored_2018, \
+goal_difference_2018, expected_goals_scored_2018, expected_goal_difference_2018, crosses_2018, completed_crosses_into_box_2018, \
+pressures_2018, successful_pressures_2018, num_high_press_2018]
 
-
+writer.writerow(rows)
 
 # Close csv file
 csv_file.close()
